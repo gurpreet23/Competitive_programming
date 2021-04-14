@@ -1,0 +1,20 @@
+//There are n friends who want to go to party. one person can either go alone in party or can go in a pair
+//find the number of ways n friends can go
+#include <iostream>
+using namespace std;
+
+int noOfWays(int n){
+	if(n==0 || n==1 || n==2){
+		return n;
+	}
+	else{
+		return (noOfWays(n-1)+(n-1)*noOfWays(n-2));
+	}
+}
+
+int main() {
+	int n;
+	cin>>n;
+	cout<<noOfWays(n);
+	return 0;
+}
