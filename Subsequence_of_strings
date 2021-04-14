@@ -1,0 +1,30 @@
+//program to convert the string into its all codes. 
+#include <bits/stdc++.h>
+using namespace std;
+
+void codesOfString(string str, string osf, char *mapping){
+	int firstNumber = str[0]-'0';
+	int secondNumber;
+	if(str.size()==0){
+		cout<<osf<<endl;
+		return;
+	}
+	if(str.size()>=2){
+		secondNumber = stoi(str.substr(0,2));
+		if(secondNumber<=26){
+			codesOfString(str.substr(2), osf+mapping[secondNumber], mapping);
+		}
+		codesOfString(str.substr(1),osf+mapping[firstNumber],mapping);
+		
+	}
+	else{
+		codesOfString(str.substr(1),osf+mapping[firstNumber],mapping);
+	}
+}
+
+int main() {
+	string str;
+	char mapping[27] = {'#', 'a','b','c','d', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+	cin>>str; 
+	codesOfString(str, "", mapping);
+}
