@@ -1,0 +1,34 @@
+vector<int> Solution::nextGreater(vector<int> &A) {
+    //cout<<"hello";
+    int n = A.size();
+    //cout<<A.size();
+    vector<int> res(n);
+    stack<int> s;
+    res[n-1]=-1;
+    s.push(A[n-1]);
+    for(int i=A.size()-2;i>=0;i--){
+        //int tt = s.top();
+        if(A[i]<s.top()){
+            res[i] = s.top();
+        }
+        
+        while(!s.empty() && A[i]>=s.top() ){
+            s.pop();
+        }
+        if(s.empty()){
+            res[i]=-1;
+        }
+        else{
+            res[i]= s.top();
+        }
+        
+        s.push(A[i]);
+    }
+    
+    // for(int i=0;i<res.size();i++){
+    //     cout<<res[i]<<" "   ;
+    // }
+   // cout<<endl;
+    
+    return res;
+}
