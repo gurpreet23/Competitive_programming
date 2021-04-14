@@ -1,0 +1,51 @@
+//given an array of non negative integers. the array is special for every pair of adjacent elements 
+//their sum is a perfect square.
+//Return the number of permutations of array that are special. Two permutation p1 and p2 differ if and 
+//only if for some i we have p1[i]!=p2[i]
+//
+#include <bits/stdc++.h>
+using namespace std;
+
+int count1=0;
+
+bool checkSpecial(int a, int b){
+	double sq = sqrt(a+b);
+	return (sq-floor(sq))==0;
+}
+
+void helper(vector<long long> &arr, int start){
+	if(start>1 && (!checkSpecial(arr[start-2], arr[start-1]))){
+		return;
+	}
+	if(start==arr.size()-1 && (!checkSpecial(arr[start], arr[start-1]))){
+		return;
+	}
+	if(start==arr.size()){
+		count1++;
+	}
+	unordered_set<long long> mp;
+	for(int i=start;i<arr.size();i++){
+		if(mp.count(arr[i])==0){
+			mp.insert(arr[i]);
+			swap(arr[i],arr[start]);
+			helper(arr,start+1);
+			swap(arr[i],arr[start]);
+		}
+	}
+}
+
+int numberOfSpecialPermutations(vector<long long> &arr){
+	helper(arr, 0);
+	return count1;
+}
+
+int main() {
+	int n;
+	cin>>n;
+	vector<long long> v(n,0);
+	for(int i=0;i<v.size();i++){
+		cin>>v[i];
+	}
+	cout<<numberOfSpecialPermutations(v);
+	return 0;
+}
