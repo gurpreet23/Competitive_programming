@@ -1,0 +1,120 @@
+//LRU cache implementation using doubly linked list and hash map.
+#include <bits/stdc++.h>
+using namespace std;
+
+class DLLNode{
+	public:
+		int key;
+		int value;
+		DLLNode* next;
+		DLLNode* prev;
+		DLLNode(int k, int v){
+			this->key = k;
+			this->value = v;
+			this->next = NULL;
+			this->prev = NULL;
+			
+		}
+};
+
+int size;
+int capacity;
+unordered_map<int, DLLNode*> cache;
+DLLNode* head = new DLLNode(-1,-1);
+DLLNode* tail = new DLLNode(-1,-1);
+
+void addToHead(DLLNode* node){
+	node->next = head->next;
+	node->prev = head;
+	head->next->prev = node;
+	head->next = node;
+}
+
+void removeNode(DLLNode* node){
+	node->prev->next = node->next;
+	node->next->prev = node->prev;
+}
+
+void moveToHead(DLLNode* node){
+	cout<<"Accessed the key "<<node->key<<endl;
+	removeNode(node);
+	addToHead(node);
+}
+
+int removeFromTail(){
+	DLLNode* temp = tail->prev;
+	removeNode(temp);
+	return temp->key;
+}
+
+int get(int k){
+	if(cache.count(k)==0){
+		cout<<"value is not present in the cache "<<endl;
+		return INT_MIN;
+	}
+	else{
+		DLLNode* temp = cache[k];
+		moveToHead(temp);
+		return temp->value;
+		
+	}
+}
+
+void put(int k, int v){
+	if(cache.count(k)==0){
+		DLLNode* node = new DLLNode(k,v);
+		cache[k]=node;
+		addToHead(node);
+		cout<<"Added a key "<<k<<endl;
+		capacity++;
+		if(capacity>size){
+			int removekey = removeFromTail();
+			cout<<"Cache is full so removed the key "<<removekey<<endl;
+			capacity--;
+			cache.erase(removekey);
+			
+		}
+	}
+	else{
+		cout<<"Modifying the value "<<endl;
+		DLLNode* node = cache[k];
+		node->value =v;
+	}
+}
+
+int main() {
+	head->next = tail;
+	tail->prev = head;
+	cin>>size;
+	int q;
+	cin>>q;
+	char ch;
+	int k,v;
+	while(q--){
+		cin>>ch;
+		if(ch=='p'){
+			cin>>k>>v;
+			put(k,v);
+		}
+		else{
+			cin>>k;
+			int value = get(k);
+			cout<<"value for key is "<<value<<endl;
+		}
+	}
+	
+	return 0;
+}
+/*sample input
+2
+9
+p 1 1
+p 2 2
+g 1
+p 3 3
+g 2 
+p 4 4
+g 1
+g 3
+g 4
+*/
