@@ -79,6 +79,7 @@ void put(int k, int v){
 		cout<<"Modifying the value "<<endl;
 		DLLNode* node = cache[k];
 		node->value =v;
+		moveToHead(node);
 	}
 }
 
